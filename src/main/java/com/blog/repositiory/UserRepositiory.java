@@ -8,4 +8,5 @@ import javax.transaction.Transactional;
 
 @Service
 public interface UserRepositiory extends JpaRepository<User, Integer> {
+    public User findById(int id);
 }

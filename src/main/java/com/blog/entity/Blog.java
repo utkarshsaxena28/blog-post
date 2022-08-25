@@ -1,10 +1,6 @@
 package com.blog.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.Email;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -19,7 +15,7 @@ public class Blog {
     private String title;
 
     @NotEmpty
-    @Size(min = 100, message = "min 100 words required" )
+    @Column(length = 10000)
     private String content;
 
     @NotEmpty

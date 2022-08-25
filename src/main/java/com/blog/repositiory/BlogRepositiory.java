@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
-@Service
 public interface BlogRepositiory extends JpaRepository<Blog, Integer> {
+    public Blog findById(int id);
 }

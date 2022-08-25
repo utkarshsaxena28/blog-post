@@ -29,14 +29,18 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Blog> posts = new ArrayList<>();
 
+
+    public boolean admin;
+
     public User() {
     }
 
-    public User(int user_id, String name, String email, String password) {
+    public User(int user_id, String name, String email, String password, boolean admin) {
         this.user_id = user_id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.admin = admin;
     }
 
     public int getUser_id() {
@@ -71,6 +75,14 @@ public class User {
         this.password = password;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -78,6 +90,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", admin='" + admin + '\'' +
                 '}';
     }
 }
