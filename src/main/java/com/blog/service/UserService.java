@@ -20,12 +20,24 @@ public class UserService {
         List<User> list=  (List<User>) userRepo.findAll();
         return list;
     }
-
+    /*
     // get User by id
     public User getUserById(int id) {
         User result = userRepo.getReferenceById(id);
         return result;
 
+    }*/
+
+    // get single user by id
+    public User getUserById(int id) {
+        User user = null;
+        try {
+            // book = list.stream().filter(e -> e.getId() == id).findFirst().get();
+            user=userRepo.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     // Adding the user or Posting the User
