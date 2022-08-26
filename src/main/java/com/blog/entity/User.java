@@ -1,5 +1,7 @@
 package com.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -75,6 +77,10 @@ public class User {
         this.password = password;
     }
 
+    public List<Blog> getPosts() {
+        return posts;
+    }
+
     public boolean isAdmin() {
         return admin;
     }
@@ -93,4 +99,5 @@ public class User {
                 ", admin='" + admin + '\'' +
                 '}';
     }
+
 }
