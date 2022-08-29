@@ -19,16 +19,16 @@ public class Blog {
     private String content;
 
     @NotEmpty
-    private String user_id;
+    private int user_id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "FKEY_user_id")
     private User user;
 
     public Blog() {
     }
 
-    public Blog(int blog_id, String title, String content, String user_id) {
+    public Blog(int blog_id, String title, String content, int user_id) {
         this.blog_id = blog_id;
         this.title = title;
         this.content = content;
@@ -58,6 +58,22 @@ public class Blog {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void assignUser(User user){
+        this.user = user;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     @Override

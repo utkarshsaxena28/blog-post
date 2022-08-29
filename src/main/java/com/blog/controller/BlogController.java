@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import java.util.List;
+
 import java.util.Optional;
 
 
@@ -9,6 +10,7 @@ import javax.validation.Valid;
 import com.blog.BlogPostApplication;
 import com.blog.entity.Blog;
 import com.blog.service.BlogService;
+import com.blog.kafka.KafkaProducer;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 public class BlogController {
 
     static Logger logger = LogManager.getLogger(BlogPostApplication.class);
+    
+    @Autowired
+	private KafkaProducer kafkaProducer;
 
     //@Autowired
     //private KafkaProducer kafkaProducer;
@@ -29,7 +34,7 @@ public class BlogController {
     @Autowired
     private BlogService blgService;
 
-    @GetMapping("/getBlog")
+    @GetMapping("/getblog")
     public ResponseEntity<List<Blog>> list() {
 
         logger.info("Getting the list of all blogs");
@@ -64,14 +69,14 @@ public class BlogController {
 		return ResponseEntity.of(Optional.of(Blog));
 	}
 
-    @PostMapping("/addblog")
-    public ResponseEntity<Blog> add(@Valid @RequestBody Blog bg) {
+    @PostMapping("{userid}/addblog") //  /api/blog/addblog/5
+    public ResponseEntity<Blog> add(@Valid @RequestBody Blog bg, @PathVariable("userid") int userid) {
         Blog b = null;
         try {
             b = blgService.addBlog(bg);
             int id = bg.getBlog_id();
-            logger.info("Adding New Blog having id equale to {}..........", id);
-            //kafkaProducer.sendMessage(String.format("NEW USER IS ADDED having id equale to %s ", id));
+            //logger.info("Adding New Blog having id equale to {}..........", id);
+            kafkaProducer.sendMessage(String.format("USER having id equale to %s has added a new blog having blog_id = %s", userid, id));
             return ResponseEntity.of(Optional.of(b));
         } catch(Exception e) {
             e.printStackTrace();
@@ -81,12 +86,12 @@ public class BlogController {
 
 
     @PutMapping("/updateblog/{id}")
-    public ResponseEntity<Blog> updateBlog(@Valid @RequestBody Blog empl, @PathVariable("id") int id) {
+    public ResponseEntity<Blog> updateBlog(@Valid @RequestBody Blog bog, @PathVariable("id") int id) {
 
         try {
-            Blog emp = blgService.updateBlog(empl,id);
+            Blog bg = blgService.updateBlog(bog,id);
             logger.info("Updating Blog having id equale to {}............", id);
-            return ResponseEntity.ok().body(emp);
+            return ResponseEntity.ok().body(bg);
         } catch(Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -105,11 +110,11 @@ public class BlogController {
         }
     }
 
-    @DeleteMapping("/deleteblog/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") int id) {
+    @DeleteMapping("{userid}/deleteblog/{blogid}")
+    public ResponseEntity<?> delete(@PathVariable("blogid") int blogid, @PathVariable("userid") int userid) {
         try {
-            blgService.delete(id);
-            logger.info("Blog having id equal to {} is deleted.............", id);
+            blgService.delete(blogid, userid);
+            //logger.info("Blog having id equal to {} is deleted.............", blogid);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch(Exception e) {
             e.printStackTrace();
