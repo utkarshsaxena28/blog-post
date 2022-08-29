@@ -3,6 +3,7 @@ package com.blog.service;
 import com.blog.BlogPostApplication;
 import com.blog.entity.Blog;
 import com.blog.entity.User;
+import com.blog.kafka.KafkaProducer;
 import com.blog.repositiory.BlogRepositiory;
 import com.blog.repositiory.UserRepositiory;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +22,9 @@ public class BlogService {
     @Autowired
     private BlogRepositiory blogRepo;
 
+    @Autowired
+    private KafkaProducer kafkaProducer;
+
     //private Blog bell;
 
     @Autowired
@@ -29,6 +33,11 @@ public class BlogService {
     // Getting list of all Blogs present in database
     public List<Blog> listAll() {
         List<Blog> list=  (List<Blog>) blogRepo.findAll();
+        return list;
+    }
+
+    public List<Blog> listAllByUserId(int userid) {
+        List<Blog> list=  blogRepo.findByUserid(userid);
         return list;
     }
 
@@ -62,9 +71,9 @@ public class BlogService {
         bell.assignUser(user);*/
 
     // Update the Blog
-    public Blog updateBlog(Blog usr, int Eid) {
-        usr.setBlog_id(Eid);
-        Blog result = blogRepo.save(usr);
+    public Blog updateBlog(Blog b, int Eid) {
+        b.setBlog_id(Eid);
+        Blog result = blogRepo.save(b);
         return result;
     }
 
@@ -79,18 +88,21 @@ public class BlogService {
     public void delete(int blogid, int userid) {
 
         boolean role = userRepo.findById(userid).isAdmin();
+        int adminid = userRepo.findById(userid).getUser_id();
         String name = userRepo.findById(userid).getName();
-        int FKey = blogRepo.findById(blogid).getUser_id();
+        int FKey = blogRepo.findById(blogid).getUserid();
 
         if (role == true) {
             blogRepo.deleteById(blogid);
+            kafkaProducer.sendMessage(String.format("Administrator having id equal to %s has deleted the blog having blog_id = %s", adminid, blogid));
             System.out.println("***************************************************************************************************************************");
-            logger.info("Administerator has deleted your blog..............................");
+            logger.info("Administrator has deleted your blog..............................");
             System.out.println("***************************************************************************************************************************");
 
         }
         else if (userid==FKey){
             blogRepo.deleteById(blogid);
+            kafkaProducer.sendMessage(String.format("USER having id equal to %s has deleted his blog having blog_id = %s", userid, blogid));
             System.out.println("***************************************************************************************************************************");
             logger.info("{} your blog is deleted..................................", name);
             System.out.println("***************************************************************************************************************************");
