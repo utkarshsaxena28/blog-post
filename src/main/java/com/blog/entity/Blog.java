@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 public class Blog {
 
     @Id
-    private int blog_id;
+    private int blogId;
 
     @NotEmpty
     @Size(min = 4, message = "min 4 character required" )
@@ -19,7 +19,7 @@ public class Blog {
     private String content;
 
 
-    private int userid;
+    private int userId;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "FKEY_user_id")
@@ -28,20 +28,20 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(int blog_id, String title, String content, int userid) {
-        this.blog_id = blog_id;
+    public Blog(int blogId, String title, String content, int userId) {
+        this.blogId = blogId;
         this.title = title;
         this.content = content;
-        this.userid = userid;
+        this.userId = userId;
     }
 
 
-    public int getBlog_id() {
-        return blog_id;
+    public int getBlogId() {
+        return blogId;
     }
 
-    public void setBlog_id(int blog_id) {
-        this.blog_id = blog_id;
+    public void setBlogId(int blog_id) {
+        this.blogId = blogId;
     }
 
     public String getTitle() {
@@ -68,21 +68,21 @@ public class Blog {
         this.user = user;
     }
 
-    public int getUserid() {
-        return userid;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
     public String toString() {
         return "Blog{" +
-                "blog_id=" + blog_id +
+                "blog_id=" + blogId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", user_id='" + userid + '\'' +
+                ", user_id='" + userId + '\'' +
                 '}';
     }
 }

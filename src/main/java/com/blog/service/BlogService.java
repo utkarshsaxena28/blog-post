@@ -25,7 +25,6 @@ public class BlogService {
     @Autowired
     private KafkaProducer kafkaProducer;
 
-    //private Blog bell;
 
     @Autowired
     private UserRepositiory userRepo;
@@ -41,19 +40,11 @@ public class BlogService {
         return list;
     }
 
-    // get Blog by id
-    /*
-    public Blog getBlogById(int id) {
-        Blog result = blogRepo.getReferenceById(id);
-        return result;
-
-    }*/
 
     // get single blog by id
     public Blog getBlogById(int id) {
         Blog bg = null;
         try {
-            // book = list.stream().filter(e -> e.getId() == id).findFirst().get();
             bg=blogRepo.findById(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,24 +53,21 @@ public class BlogService {
     }
 
     // Adding the Blog or Posting the Blog
-    public Blog addBlog(Blog usr) { // int userid
+    public Blog addBlog(Blog usr) {
         Blog result = blogRepo.save(usr);
         return result;
     }
-    /*
-        User user=userRepo.findById(userid);
-        bell.assignUser(user);*/
 
     // Update the Blog
     public Blog updateBlog(Blog b, int Eid) {
-        b.setBlog_id(Eid);
+        b.setBlogId(Eid);
         Blog result = blogRepo.save(b);
         return result;
     }
 
     // Partially Update the Blog
     public Blog partiallyUpdateBlog(Blog usr, int Eid) {
-        usr.setBlog_id(Eid);
+        usr.setBlogId(Eid);
         Blog result = blogRepo.save(usr);
         return result;
     }
@@ -88,30 +76,30 @@ public class BlogService {
     public void delete(int blogid, int userid) {
 
         boolean role = userRepo.findById(userid).isAdmin();
-        int adminid = userRepo.findById(userid).getUser_id();
+        int adminid = userRepo.findById(userid).getUserId();
         String name = userRepo.findById(userid).getName();
-        int FKey = blogRepo.findById(blogid).getUserid();
+        int FKey = blogRepo.findById(blogid).getUserId();
 
         if (role == true) {
             blogRepo.deleteById(blogid);
             kafkaProducer.sendMessage(String.format("Administrator having id equal to %s has deleted the blog having blog_id = %s", adminid, blogid));
-            System.out.println("***************************************************************************************************************************");
+            logger.info("************************************************************************************************");
             logger.info("Administrator has deleted your blog..............................");
-            System.out.println("***************************************************************************************************************************");
+            logger.info("************************************************************************************************");
 
         }
         else if (userid==FKey){
             blogRepo.deleteById(blogid);
             kafkaProducer.sendMessage(String.format("USER having id equal to %s has deleted his blog having blog_id = %s", userid, blogid));
-            System.out.println("***************************************************************************************************************************");
+            logger.info("************************************************************************************************");
             logger.info("{} your blog is deleted..................................", name);
-            System.out.println("***************************************************************************************************************************");
+            logger.info("************************************************************************************************");
 
         }
         else{
-            System.out.println("***************************************************************************************************************************");
+            logger.info("************************************************************************************************");
             logger.info("you are not authorized to delete this blog...........................");
-            System.out.println("***************************************************************************************************************************");
+            logger.info("************************************************************************************************");
         }
     }
 }
