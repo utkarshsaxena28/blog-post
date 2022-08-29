@@ -35,16 +35,28 @@ public class BlogController {
     private BlogService blgService;
 
     @GetMapping("/getblog")
-    public ResponseEntity<List<Blog>> list() {
+    public ResponseEntity<List<Blog>> list(@RequestBody Blog bg) {
 
         logger.info("Getting the list of all blogs");
 
-        List<Blog> list = blgService.listAll();
-        System.out.println(list);
-        if (list.size()<=0) {
-            return  ResponseEntity.status( HttpStatus.NOT_FOUND).build();
+        int userid =  bg.getUserid();
+
+        if (userid == 0) {
+            List<Blog> list = blgService.listAll();
+            System.out.println(list);
+            if (list.size()<=0) {
+                return  ResponseEntity.status( HttpStatus.NOT_FOUND).build();
+            }
+            return ResponseEntity.of(Optional.of(list));
         }
-        return ResponseEntity.of(Optional.of(list));
+        else {
+            List<Blog> list1 = blgService.listAllByUserId(userid);
+            System.out.println(list1);
+            if (list1.size()<=0) {
+                return  ResponseEntity.status( HttpStatus.NOT_FOUND).build();
+            }
+            return ResponseEntity.of(Optional.of(list1));
+        }
     }
 
     /*
@@ -55,19 +67,19 @@ public class BlogController {
         return blgService.getBlogById(id);
     }*/
 
-	@GetMapping("/Blogid/{id}")
-	public ResponseEntity<Blog> getEmployee(@PathVariable("id") int id) {
+    @GetMapping("/blogbyid/{id}")
+    public ResponseEntity<Blog> getEmployee(@PathVariable("id") int id) {
 
-		logger.info("getting Blog by id number {}..............", id);
-		//return "Blog data "+id;
+        logger.info("getting Blog by id number {}..............", id);
+        //return "Blog data "+id;
 
-		Blog Blog = blgService.getBlogById(id);
+        Blog Blog = blgService.getBlogById(id);
 
-		if (Blog==null) {
-			return  ResponseEntity.status( HttpStatus.NOT_FOUND).build();
-		}
-		return ResponseEntity.of(Optional.of(Blog));
-	}
+        if (Blog==null) {
+            return  ResponseEntity.status( HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.of(Optional.of(Blog));
+    }
 
     @PostMapping("{userid}/addblog") //  /api/blog/addblog/5
     public ResponseEntity<Blog> add(@Valid @RequestBody Blog bg, @PathVariable("userid") int userid) {
@@ -76,7 +88,7 @@ public class BlogController {
             b = blgService.addBlog(bg);
             int id = bg.getBlog_id();
             //logger.info("Adding New Blog having id equale to {}..........", id);
-            kafkaProducer.sendMessage(String.format("USER having id equale to %s has added a new blog having blog_id = %s", userid, id));
+            kafkaProducer.sendMessage(String.format("USER having id equal to %s has added a new blog having blog_id = %s", userid, id));
             return ResponseEntity.of(Optional.of(b));
         } catch(Exception e) {
             e.printStackTrace();
@@ -85,12 +97,13 @@ public class BlogController {
     }
 
 
-    @PutMapping("/updateblog/{id}")
-    public ResponseEntity<Blog> updateBlog(@Valid @RequestBody Blog bog, @PathVariable("id") int id) {
+    @PutMapping("{userid}/update/{blogid}")
+    public ResponseEntity<Blog> updateBlog(@Valid @RequestBody Blog bog, @PathVariable("blogid") int blogid,@PathVariable("userid") int userid) {
 
         try {
-            Blog bg = blgService.updateBlog(bog,id);
-            logger.info("Updating Blog having id equale to {}............", id);
+            Blog bg = blgService.updateBlog(bog,blogid);
+            logger.info("Updating Blog having id equale to {}............", blogid);
+            kafkaProducer.sendMessage(String.format("USER having id equal to %s has updated his profile", userid));
             return ResponseEntity.ok().body(bg);
         } catch(Exception e) {
             e.printStackTrace();
@@ -98,11 +111,12 @@ public class BlogController {
         }
     }
 
-    @PatchMapping("/patchblog/{id}")
-    public ResponseEntity<Blog> updatePartially(@Valid @RequestBody Blog b, @PathVariable("id") int id) {
+    @PatchMapping("{userid}/updateblog/{blogid}")
+    public ResponseEntity<Blog> updatePartially(@Valid @RequestBody Blog b, @PathVariable("blogid") int blogid, @PathVariable("userid") int userid) {
         try {
-            Blog bl = blgService.partiallyUpdateBlog(b,id);
-            logger.info("Updating Blog having id equale to {}............", id);
+            Blog bl = blgService.partiallyUpdateBlog(b,blogid);
+            //logger.info("Updating Blog having id equale to {}............", id);
+            kafkaProducer.sendMessage(String.format("USER having id equal to %s has Updated his blog having blog_id = %s", userid, blogid));
             return ResponseEntity.of(Optional.of(bl));
         } catch(Exception e) {
             e.printStackTrace();
@@ -115,6 +129,7 @@ public class BlogController {
         try {
             blgService.delete(blogid, userid);
             //logger.info("Blog having id equal to {} is deleted.............", blogid);
+            //kafkaProducer.sendMessage(String.format("USER having id equal to %s has deleted his blog having blog_id = %s", userid, blogid));
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch(Exception e) {
             e.printStackTrace();

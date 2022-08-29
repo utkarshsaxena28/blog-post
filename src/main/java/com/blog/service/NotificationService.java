@@ -16,7 +16,7 @@ public class NotificationService {
 	private NotifyRepo notifyRepo;
 
 	// Adding the employee or Posting the employee
-	public Notification empAdded(Notification nty) {
+	public Notification notificationAdded(Notification nty) {
 		Notification added = notifyRepo.save(nty);
 		return added;
 	}
