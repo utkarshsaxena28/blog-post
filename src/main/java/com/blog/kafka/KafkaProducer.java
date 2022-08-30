@@ -10,10 +10,8 @@ public class KafkaProducer {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaProducer.class);
 
-
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    // Constructor which takes key and value and set it to the above kafkaTemplate
     public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }

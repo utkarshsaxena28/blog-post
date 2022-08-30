@@ -20,13 +20,6 @@ public class UserService {
         List<User> list=  (List<User>) userRepo.findAll();
         return list;
     }
-    /*
-    // get User by id
-    public User getUserById(int id) {
-        User result = userRepo.getReferenceById(id);
-        return result;
-
-    }*/
 
     // get single user by id
     public User getUserById(int id) {
@@ -47,15 +40,15 @@ public class UserService {
     }
 
     // Update the User
-    public User updateUser(User usr, int Eid) {
-        usr.setUser_id(Eid);
+    public User updateUser(User usr, int Uid) {
+        usr.setUserId(Uid);
         User result = userRepo.save(usr);
         return result;
     }
 
     // Partially Update the User
-    public User partiallyUpdateUser(User usr, int Eid) {
-        usr.setUser_id(Eid);
+    public User partiallyUpdateUser(User usr, int Uid) {
+        usr.setUserId(Uid);
         User result = userRepo.save(usr);
         return result;
     }

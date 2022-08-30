@@ -15,7 +15,7 @@ import java.util.List;
 public class User {
 
     @Id
-    private int user_id;
+    private int userId;
 
     @NotEmpty
     @Size(min = 4, message = "min 4 required" )
@@ -37,20 +37,20 @@ public class User {
     public User() {
     }
 
-    public User(int user_id, String name, String email, String password, boolean admin) {
-        this.user_id = user_id;
+    public User(int userId, String name, String email, String password, boolean admin) {
+        this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
         this.admin = admin;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -92,7 +92,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + user_id +
+                "user_id=" + userId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
