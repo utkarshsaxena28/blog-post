@@ -40,7 +40,7 @@ public class Blog {
         return blogId;
     }
 
-    public void setBlogId(int blog_id) {
+    public void setBlogId(int blogId) {
         this.blogId = blogId;
     }
 

@@ -40,15 +40,15 @@ public class UserService {
     }
 
     // Update the User
-    public User updateUser(User usr, int Eid) {
-        usr.setUserId(Eid);
+    public User updateUser(User usr, int Uid) {
+        usr.setUserId(Uid);
         User result = userRepo.save(usr);
         return result;
     }
 
     // Partially Update the User
-    public User partiallyUpdateUser(User usr, int Eid) {
-        usr.setUserId(Eid);
+    public User partiallyUpdateUser(User usr, int Uid) {
+        usr.setUserId(Uid);
         User result = userRepo.save(usr);
         return result;
     }
