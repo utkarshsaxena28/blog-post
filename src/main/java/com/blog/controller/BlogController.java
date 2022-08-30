@@ -142,8 +142,6 @@ public class BlogController {
 
         Response resp = blgService.delete(blogId, userId);
         try {
-
-            logger.info("#####################" + resp.getMessage() + "#######################");
             logger.info("Blog having id equal to {} is deleted.............", blogId);
             return new ResponseEntity<>(resp.getMessage(),HttpStatus.OK);
         } catch(Exception e) {
