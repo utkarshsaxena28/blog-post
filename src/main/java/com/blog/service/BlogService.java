@@ -36,8 +36,15 @@ public class BlogService {
         return list;
     }
 
+    // Getting list of all blogs written by particular user
     public List<Blog> listAllByUserId(int userId) {
         List<Blog> list=  blogRepo.findByUserId(userId);
+        return list;
+    }
+
+    // Getting list of all blogs Containing Keyword
+    public List<Blog> listAllByKeyword(String word) {
+        List<Blog> list=  blogRepo.findByContentContaining(word);
         return list;
     }
 
@@ -60,15 +67,15 @@ public class BlogService {
     }
 
     // Update the Blog
-    public Blog updateBlog(Blog b, int Eid) {
-        b.setBlogId(Eid);
+    public Blog updateBlog(Blog b, int Bid) {
+        b.setBlogId(Bid);
         Blog result = blogRepo.save(b);
         return result;
     }
 
     // Partially Update the Blog
-    public Blog partiallyUpdateBlog(Blog usr, int Eid) {
-        usr.setBlogId(Eid);
+    public Blog partiallyUpdateBlog(Blog usr, int Bid) {
+        usr.setBlogId(Bid);
         Blog result = blogRepo.save(usr);
         return result;
     }

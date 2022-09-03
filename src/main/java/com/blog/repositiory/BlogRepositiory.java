@@ -9,6 +9,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface BlogRepositiory extends JpaRepository<Blog, Integer> {
-    public Blog findById(int id);
-    public List<Blog> findByUserId(int userid);
+    Blog findById(int id);
+    List<Blog> findByUserId(int userid);
+
+    List<Blog> findByContentContaining(String keyword);
+
+
 }

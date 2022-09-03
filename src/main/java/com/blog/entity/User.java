@@ -28,21 +28,19 @@ public class User {
     @NotEmpty
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Blog> posts = new ArrayList<>();
-
-
+    private String rol;
     public boolean admin;
 
     public User() {
     }
 
-    public User(int userId, String name, String email, String password, boolean admin) {
+    public User(int userId, String name, String email, String password, boolean admin, String rol) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
         this.admin = admin;
+        this.rol=rol;
     }
 
     public int getUserId() {
@@ -77,16 +75,20 @@ public class User {
         this.password = password;
     }
 
-    public List<Blog> getPosts() {
-        return posts;
-    }
-
     public boolean isAdmin() {
         return admin;
     }
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     @Override
@@ -97,6 +99,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", admin='" + admin + '\'' +
+                ", rol='" + rol +
                 '}';
     }
 
