@@ -1,5 +1,5 @@
 package com.blog.security.model;
-
+/*
 public class JwtRequest {
 
     String username;
@@ -38,4 +38,4 @@ public class JwtRequest {
                 ", password='" + password + '\'' +
                 '}';
     }
-}
+}*/

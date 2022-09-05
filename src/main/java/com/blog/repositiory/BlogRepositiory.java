@@ -14,5 +14,4 @@ public interface BlogRepositiory extends JpaRepository<Blog, Integer> {
 
     List<Blog> findByContentContaining(String keyword);
 
-
 }

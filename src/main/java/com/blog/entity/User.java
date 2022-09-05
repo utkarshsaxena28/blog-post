@@ -2,9 +2,7 @@ package com.blog.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -15,6 +13,7 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private int userId;
 
     @NotEmpty

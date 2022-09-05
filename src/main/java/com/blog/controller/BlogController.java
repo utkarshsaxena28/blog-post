@@ -1,5 +1,6 @@
 package com.blog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Optional;
@@ -33,11 +34,11 @@ public class BlogController {
     @Autowired
     private BlogService blgService;
 
-    @GetMapping("/blogs")
-    public ResponseEntity<Response> list(@RequestBody Request req) {
+    @GetMapping("/blogs")                                                              // CHECKED
+    public ResponseEntity<Response> list(@RequestParam(required = false) int userId) {
 
         Response resp = new Response();
-        int userId = req.getUserId();
+        //int userId = req.getUserId();
 
         if (userId == 0) {
             List<Blog> list = blgService.listAll();
@@ -64,15 +65,15 @@ public class BlogController {
         }
     }
 
-    @GetMapping("/blogs/{blogId}")
-    public ResponseEntity<Response> getBlogsById(@PathVariable("blogId") int blogId) {
+    @GetMapping("/blgs")                                                    // CHECKED
+    public ResponseEntity<Response> getBlogsById(@RequestParam("blogId") int blogId) {
 
         logger.info("getting Blog by id number {}..............", blogId);
-
+        List<Blog> list2 = new ArrayList<Blog>();
         Response resp = new Response();
-        Blog blog = blgService.getBlogById(blogId);
-        resp.setBlog(blog);
-        if (blog == null) {
+        list2.add(blgService.getBlogById(blogId));
+        resp.setList(list2);
+        if (list2 == null) {
             resp.setMessage(String.format("blog having id = %s is not present", blogId));
             return  new ResponseEntity<>(resp,HttpStatus.NOT_FOUND);
         }
@@ -80,16 +81,16 @@ public class BlogController {
         return new ResponseEntity<>(resp,HttpStatus.OK);
     }
 
-    @GetMapping("/blogs/search/{keyword}")
-    public ResponseEntity<Response> getBlogsByWords(@PathVariable("keyword") String keyword) {
+    @GetMapping("/blogs/search")                                      // CHECKED
+    public ResponseEntity<Response> getBlogsByWords(@RequestParam("keyword") String keyword) {
 
         logger.info("getting Blog which contains the word {}..............", keyword);
 
         Response resp = new Response();
-        List<Blog> list2 = blgService.listAllByKeyword(keyword);
-        resp.setList(list2);
-        logger.info(list2);
-        if (list2.size() <= 0) {
+        List<Blog> list3 = blgService.listAllByKeyword(keyword);
+        resp.setList(list3);
+        logger.info(list3);
+        if (list3.isEmpty()) {
             resp.setMessage(String.format("Sorry Blog having Keyword = %s does not exist ", keyword));
             return  new ResponseEntity<>(resp,HttpStatus.NOT_FOUND);
         }
@@ -97,17 +98,18 @@ public class BlogController {
         return new ResponseEntity<>(resp,HttpStatus.OK);
     }
 
-    @PostMapping("{userId}/blogs")
-    public ResponseEntity<Response> addBlog(@Valid @RequestBody Request req, @PathVariable("userId") int userId) {
+    @PostMapping("/blogs")                                           // CHECKED
+    public ResponseEntity<Response> addBlog(@Valid @RequestBody Request req ) {
 
-        Blog b;
+        List<Blog> list4 = new ArrayList<Blog>();
         Response resp = new Response();
         Blog bg = req.getBlog();
 
         try {
-            b = blgService.addBlog(bg);
-            resp.setBlog(b);
+            list4.add(blgService.addBlog(bg));
+            resp.setList(list4);
             int id = bg.getBlogId();
+            int userId = bg.getUserId();
             logger.info("Adding New Blog having id equale to {}..........", id);
             kafkaProducer.sendMessage(String.format("USER having id equal to %s has added a new blog having blog_id = %s", userId, id));
             resp.setMessage(String.format("Your blog having id = %s is successfully added", id));
@@ -117,13 +119,16 @@ public class BlogController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PutMapping("{userId}/blogs/{blogId}")
-    public ResponseEntity<Response> updateBlog(@Valid @RequestBody Request req, @PathVariable("blogId") int blogId,@PathVariable("userId") int userId) {
+    @PutMapping("/blogs")                                       // CHECKED
+    public ResponseEntity<Response> updateBlog(@Valid @RequestBody Request req ) {
         Response resp = new Response();
         Blog bog = req.getBlog();
+        int blogId = bog.getBlogId();
+        int userId = bog.getUserId();
         try {
-            Blog bg = blgService.updateBlog(bog,blogId);
-            resp.setBlog(bg);
+            List<Blog> list5 = new ArrayList<Blog>();
+            list5.add(blgService.updateBlog(bog,blogId));
+            resp.setList(list5);
             logger.info("Updating Blog having id equale to {}............", blogId);
             kafkaProducer.sendMessage(String.format("USER having id equal to %s has updated his profile", userId));
             resp.setMessage("Your profile is successfully updated");
@@ -134,13 +139,16 @@ public class BlogController {
         }
     }
 
-    @PatchMapping("{userId}/blogs/{blogId}")
-    public ResponseEntity<Response> updatePartially(@Valid @RequestBody Request req, @PathVariable("blogId") int blogId, @PathVariable("userId") int userId) {
+    @PatchMapping("/blogs")                                     // CHECKED
+    public ResponseEntity<Response> updatePartially(@Valid @RequestBody Request req) {
         Response resp = new Response();
-        Blog b = req.getBlog();
+        Blog bg = req.getBlog();
+        int blogId = bg.getBlogId();
+        int userId = bg.getUserId();
         try {
-            Blog bl = blgService.partiallyUpdateBlog(b,blogId);
-            resp.setBlog(bl);
+            List<Blog> list6 = new ArrayList<Blog>();
+            list6.add(blgService.partiallyUpdateBlog(bg,blogId));
+            resp.setList(list6);
             logger.info("Updating Blog having id equale to {}............", blogId);
             kafkaProducer.sendMessage(String.format("USER having id equal to %s has Updated his blog having blog_id = %s", userId, blogId));
             resp.setMessage(String.format("Your blog having id = %s is successfully updated", blogId));
@@ -151,8 +159,8 @@ public class BlogController {
         }
     }
 
-    @DeleteMapping("{userId}/blogs/{blogId}")
-    public ResponseEntity<String> deleteBlog(@PathVariable("blogId") int blogId, @PathVariable("userId") int userId) {
+    @DeleteMapping("/blogs")                                                       // CHECKED
+    public ResponseEntity<String> deleteBlog(@RequestParam("blogId") int blogId, @RequestParam("userId") int userId) {
 
         Response resp = blgService.delete(blogId, userId);
         try {

@@ -1,16 +1,16 @@
 package com.blog.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.blog.security.model.CustomUserDetails;
+//import com.blog.security.model.CustomUserDetails;
 import com.blog.entity.User;
 import com.blog.repositiory.UserRepositiory;
 import org.springframework.stereotype.Service;
 
-
+/*
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
@@ -28,4 +28,4 @@ public class CustomUserDetailsService implements UserDetailsService{
             return new CustomUserDetails(user);
         }
     }
-}
+}*/

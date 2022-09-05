@@ -6,8 +6,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class Blog {
-
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private int blogId;
 
     @NotEmpty
