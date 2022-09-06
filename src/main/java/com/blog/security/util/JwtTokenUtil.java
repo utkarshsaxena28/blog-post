@@ -9,11 +9,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import org.springframework.cglib.core.internal.Function;
-//import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.blog.entity.User;
 import org.springframework.stereotype.Service;
-/*
+
 @Service
 public class JwtTokenUtil {
 	
@@ -70,4 +70,4 @@ public class JwtTokenUtil {
 		final String username = getUsernameFromToken(token);
 		return ( username.equals(userDetails.getUsername())  &&  !isTokenExpired(token) );
 	}
-}*/
+}

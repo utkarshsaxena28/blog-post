@@ -14,7 +14,7 @@ public class Blog {
     @Size(min = 4, message = "min 4 character required" )
     private String title;
 
-    @NotEmpty
+    @NotEmpty(message = "content can not be  null")
     @Column(length = 10000)
     private String content;
 

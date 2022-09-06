@@ -1,5 +1,5 @@
 package com.blog.security.model;
-/*
+
 public class JwtResponse {
 
     String token;
@@ -20,4 +20,4 @@ public class JwtResponse {
     public String getToken() {
         return token;
     }
-}*/
+}
