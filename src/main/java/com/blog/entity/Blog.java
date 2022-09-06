@@ -6,8 +6,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class Blog {
-
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private int blogId;
 
     @NotEmpty
@@ -18,12 +18,7 @@ public class Blog {
     @Column(length = 10000)
     private String content;
 
-
     private int userId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "FKEY_user_id")
-    private User user;
 
     public Blog() {
     }
@@ -58,14 +53,6 @@ public class Blog {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void assignUser(User user){
-        this.user = user;
     }
 
     public int getUserId() {

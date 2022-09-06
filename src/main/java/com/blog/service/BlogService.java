@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,8 +37,15 @@ public class BlogService {
         return list;
     }
 
+    // Getting list of all blogs written by particular user
     public List<Blog> listAllByUserId(int userId) {
         List<Blog> list=  blogRepo.findByUserId(userId);
+        return list;
+    }
+
+    // Getting list of all blogs Containing Keyword
+    public List<Blog> listAllByKeyword(String word) {
+        List<Blog> list=  blogRepo.findByContentContaining(word);
         return list;
     }
 
@@ -60,15 +68,15 @@ public class BlogService {
     }
 
     // Update the Blog
-    public Blog updateBlog(Blog b, int Eid) {
-        b.setBlogId(Eid);
+    public Blog updateBlog(Blog b, int Bid) {
+        b.setBlogId(Bid);
         Blog result = blogRepo.save(b);
         return result;
     }
 
     // Partially Update the Blog
-    public Blog partiallyUpdateBlog(Blog usr, int Eid) {
-        usr.setBlogId(Eid);
+    public Blog partiallyUpdateBlog(Blog usr, int Bid) {
+        usr.setBlogId(Bid);
         Blog result = blogRepo.save(usr);
         return result;
     }
@@ -76,9 +84,10 @@ public class BlogService {
     // Deleting the Blog
     public Response delete(int blogId, int userId) {
 
-        Blog bg=blogRepo.findById(blogId);
+        List<Blog> list = new ArrayList<Blog>();
+              list.add(blogRepo.findById(blogId))  ;
         Response resp = new Response();
-        resp.setBlog(bg);
+        resp.setList(list);
 
         boolean role = userRepo.findById(userId).isAdmin();
         int adminId = userRepo.findById(userId).getUserId();

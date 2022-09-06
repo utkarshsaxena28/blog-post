@@ -7,8 +7,6 @@ import java.util.List;
 public class Response {
 
     private String message;
-    private Blog blog;
-
     private List<Blog> list;
 
     public Response() {
@@ -20,14 +18,6 @@ public class Response {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Blog getBlog() {
-        return blog;
-    }
-
-    public void setBlog(Blog blog) {
-        this.blog = blog;
     }
 
     public List<Blog> getList() {

@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     private UserService usrService;
 
-    @GetMapping("/users")
+    @GetMapping("/users")                                                //CHECKED
     public ResponseEntity<List<User>> list() {
 
         List<User> list = usrService.listAll();
@@ -34,8 +34,8 @@ public class UserController {
         return ResponseEntity.of(Optional.of(list));
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") int id) {
+    @GetMapping("/usrs")                                           //CHECKED
+    public ResponseEntity<User> getUser(@RequestParam("userId") int id) {
         try {
             logger.info("getting employee by id number {}..............", id);
             User ur = usrService.getUserById(id);
@@ -46,7 +46,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users")                                                //CHECKED
     public ResponseEntity<User> add(@Valid @RequestBody User uzr) {
         User ue = null;
         try {
@@ -60,8 +60,8 @@ public class UserController {
         }
     }
 
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User us, @PathVariable("id") int id) {
+    @PutMapping("/users")                                                    //CHECKED
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User us, @RequestParam("userId") int id) {
 
         try {
             User ue = usrService.updateUser(us,id);
@@ -73,8 +73,8 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/users/{id}")
-    public ResponseEntity<User> updatePartially(@Valid @RequestBody User ue, @PathVariable("id") int id) {
+    @PatchMapping("/users")                                          //CHECKED
+    public ResponseEntity<User> updatePartially(@Valid @RequestBody User ue, @RequestParam("userId") int id) {
         try {
             User uer = usrService.partiallyUpdateUser(ue,id);
             logger.info("Updating User having id equale to {}............", id);
@@ -85,8 +85,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") int id) {
+    @DeleteMapping("/users")                                         // CHECKED
+    public ResponseEntity<?> delete(@RequestParam("userId") int id) {
         try {
             usrService.delete(id);
             logger.info("User having id equal to {} is deleted.............", id);
