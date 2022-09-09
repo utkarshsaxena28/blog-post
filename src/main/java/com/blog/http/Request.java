@@ -2,10 +2,12 @@ package com.blog.http;
 
 import com.blog.entity.Blog;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public class Request {
 
+    @Valid
     private Blog blog;
 
     private int userId;

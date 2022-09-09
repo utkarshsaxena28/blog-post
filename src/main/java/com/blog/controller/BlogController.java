@@ -99,7 +99,7 @@ public class BlogController {
         return new ResponseEntity<>(resp,HttpStatus.OK);
     }
 
-    @PostMapping("/blogs")                                           // CHECKED
+    @PostMapping("/blogs")                                                      // CHECKED
     public ResponseEntity<Response> addBlog(@Valid @RequestBody Request req ) {
 
         List<Blog> list4 = new ArrayList<Blog>();
