@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/usrs")                                           //CHECKED
-    public ResponseEntity<User> getUser(@RequestParam("userId") int id) {
+    public ResponseEntity<User> getUser(@RequestParam("userId") Integer id) {
         try {
             logger.info("getting employee by id number {}..............", id);
             User ur = usrService.getUserById(id);
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     @PutMapping("/users")                                                    //CHECKED
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User us, @RequestParam("userId") int id) {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User us, @RequestParam("userId") Integer id) {
 
         try {
             User ue = usrService.updateUser(us,id);
@@ -74,7 +75,7 @@ public class UserController {
     }
 
     @PatchMapping("/users")                                          //CHECKED
-    public ResponseEntity<User> updatePartially(@Valid @RequestBody User ue, @RequestParam("userId") int id) {
+    public ResponseEntity<User> updatePartially(@Valid @RequestBody User ue, @RequestParam("userId") Integer id) {
         try {
             User uer = usrService.partiallyUpdateUser(ue,id);
             logger.info("Updating User having id equale to {}............", id);
@@ -86,7 +87,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users")                                         // CHECKED
-    public ResponseEntity<?> delete(@RequestParam("userId") int id) {
+    public ResponseEntity<?> delete(@RequestParam("userId") Integer id) {
         try {
             usrService.delete(id);
             logger.info("User having id equal to {} is deleted.............", id);

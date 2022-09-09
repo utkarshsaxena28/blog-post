@@ -8,21 +8,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-//import com.blog.entity.User;
-//import com.blog.repositiory.UserRepositiory;
-//import com.blog.security.util.JwtTokenUtil;
-//import com.blog.security.service.CustomUserDetailsService;
+import com.blog.entity.User;
+import com.blog.repositiory.UserRepositiory;
+import com.blog.security.util.JwtTokenUtil;
+import com.blog.security.service.CustomUserDetailsService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
-/*
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -64,12 +64,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			} catch (MalformedJwtException e) {
 				logger.error("Invalid JWT");
 			}
+
 			
 		}
 		else {
-			logger.warn("JWT Token does not begin with Bearer String");
+			logger.warn("Jwt Token is not available or JWT Token does not begin with Bearer String");
 		}
-		
+
 		// Once we get the token validate it.
 		if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
@@ -101,4 +102,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		// What is the purpose of this filterChain
 		filterChain.doFilter(request, response);
 	}
-}*/
+}

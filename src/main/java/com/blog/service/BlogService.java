@@ -85,7 +85,7 @@ public class BlogService {
     public Response delete(int blogId, int userId) {
 
         List<Blog> list = new ArrayList<Blog>();
-              list.add(blogRepo.findById(blogId))  ;
+        list.add(blogRepo.findById(blogId));
         Response resp = new Response();
         resp.setList(list);
 

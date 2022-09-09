@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/blog")
 public class BlogController {
 
@@ -35,12 +36,12 @@ public class BlogController {
     private BlogService blgService;
 
     @GetMapping("/blogs")                                                              // CHECKED
-    public ResponseEntity<Response> list(@RequestParam(required = false) int userId) {
+    public ResponseEntity<Response> list(@RequestParam(required = false) Integer userId) {
 
         Response resp = new Response();
         //int userId = req.getUserId();
 
-        if (userId == 0) {
+        if (userId == null) {
             List<Blog> list = blgService.listAll();
             resp.setList(list);
             logger.info(list);
@@ -66,7 +67,7 @@ public class BlogController {
     }
 
     @GetMapping("/blgs")                                                    // CHECKED
-    public ResponseEntity<Response> getBlogsById(@RequestParam("blogId") int blogId) {
+    public ResponseEntity<Response> getBlogsById(@RequestParam("blogId") Integer blogId) {
 
         logger.info("getting Blog by id number {}..............", blogId);
         List<Blog> list2 = new ArrayList<Blog>();
@@ -160,7 +161,7 @@ public class BlogController {
     }
 
     @DeleteMapping("/blogs")                                                       // CHECKED
-    public ResponseEntity<String> deleteBlog(@RequestParam("blogId") int blogId, @RequestParam("userId") int userId) {
+    public ResponseEntity<String> deleteBlog(@RequestParam("blogId") Integer blogId, @RequestParam("userId") Integer userId) {
 
         Response resp = blgService.delete(blogId, userId);
         try {
